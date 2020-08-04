@@ -1,1 +1,1 @@
-DEBUG=express-locallibrary-tutorial:* npm start
+DEBUG=express-locallibrary-tutorial:* npm run devstart
