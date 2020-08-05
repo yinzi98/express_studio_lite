@@ -2,10 +2,13 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var fs = require('fs');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
+var options = JSON.parse(fs.readFileSync('./config.json'));
 
 var app = express();
 
@@ -37,5 +40,16 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+const MongoClient = require('mongodb').MongoClient;
+const uri = options.dbUrl;
+const client = new MongoClient(uri, { useNewUrlParser: true });
+client.connect(err => {
+  const collection = client.db("test").collection("devices");
+  	console.log("MongoDB connected.");
+  // perform actions on the collection object
+  client.close();
+});
+
 
 module.exports = app;
