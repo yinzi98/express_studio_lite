@@ -3,3 +3,6 @@
 
 ## MongoDB Schema
 ![library-lite-MongoDB](./docs/library-lite-MongoDB.png)
+
+## Routes and controllers
+![Express_MVC](./docs/Express_MVC.png)
