@@ -1,16 +1,18 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var fs = require('fs');
-var logger = require('morgan');
+const createError = require('http-errors');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
 
-var options = JSON.parse(fs.readFileSync('./config.json'));
 
-var app = express();
+const fs = require('fs');
+const options = JSON.parse(fs.readFileSync('./config.json'));
+
+
+const express = require('express');
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -41,15 +43,11 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-const MongoClient = require('mongodb').MongoClient;
-const uri = options.dbUrl;
-const client = new MongoClient(uri, { useNewUrlParser: true });
-client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  	console.log("MongoDB connected.");
-  // perform actions on the collection object
-  client.close();
-});
-
+//Set up mongoose connection
+var mongoose = require('mongoose');
+var mongoDB = options.dbUrl;
+mongoose.connect(mongoDB, { useNewUrlParser: true });
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 module.exports = app;
